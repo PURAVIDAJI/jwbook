@@ -8,13 +8,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet("/calc") //hello 접속시 아래가 실행되는거야~!
+@WebServlet("/calc")
 
 public class CalcServlet extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     int n1 = Integer.parseInt(req.getParameter("n1"));
+    //jsp파일의 인풋태그의 이름이 n1인 것의 값을 가져온다.
     int n2= Integer.parseInt(req.getParameter("n2"));
     String op = req.getParameter("op");
 

@@ -5,13 +5,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title></title>
+<title>상품 목록</title>
 </head>
 <body>
 <h2>Product List</h2>
-//리스트를 보낼 것임
 <hr>
-<table>
+<table border="1">
 
     <tr>
         <th>번호</th><th>이름</th><th>가격</th>
@@ -27,6 +26,3 @@
 </table>
 </body>
 </html>
-
-//updatd, delete
-//데이터 처리 -> dao

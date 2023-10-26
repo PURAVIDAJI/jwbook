@@ -1,5 +1,6 @@
 <%@ page language = "java" contentType ="text/html; charset=UTF-8"
     pageEncoding="UTF-8" isELIgnored = "false"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,6 +23,16 @@
             <p class="card-text"> Content : ${news.content}</p>
         </div>
 <hr>
+        <c:if test="${error !=null}">
+            <div class =  "alert alert-danger alert dismissible fade show mt-3">
+                에러발생: ${error}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+
+            </div>
+        </c:if>
+
+
+
 <a href="javascript:history.back()" class="btn btn-primary"> Back </a>
     </div>
 </div>

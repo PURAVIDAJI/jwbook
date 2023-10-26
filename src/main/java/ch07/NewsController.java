@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet("/news.nhn")
-@MultipartConfig(maxFileSize = 1024*1024*2, location = "c:/temp/img")
+@MultipartConfig(maxFileSize = 1024*1024*2, location = "C:\\spring_study\\jwbook\\src\\main\\webapp\\img")
 
 
 public class NewsController extends HttpServlet {
@@ -40,7 +40,8 @@ public class NewsController extends HttpServlet {
 
   @Override
   protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    req.setCharacterEncoding("utf-8");
+//    req.setCharacterEncoding("utf-8");
+
     String action = req.getParameter("action");
 
     newsDAO = new NewsDAO();
@@ -52,8 +53,8 @@ public class NewsController extends HttpServlet {
       action = "list";
     } else {
       try {
-        m = this.getClass().getMethod(action, HttpServletRequest.class, HttpServletResponse.class);
-        view = (String) m.invoke(this, req, resp);
+        m = this.getClass().getMethod(action, HttpServletRequest.class);
+        view = (String) m.invoke(this, req);
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -69,7 +70,7 @@ public class NewsController extends HttpServlet {
   }
 
 
-  public String addNews(HttpServletRequest req, HttpServletResponse resp) {
+  public String addNews(HttpServletRequest req) {
     News news = new News();
     try {
       Part file = req.getPart("file");
@@ -84,12 +85,16 @@ public class NewsController extends HttpServlet {
 
     } catch (Exception e) {
       e.printStackTrace();
+      ctx.log("뉴스 등록 과정에서 문제 발생!");
+      req.setAttribute("error","뉴스가 정상적으로 등록되지 않았습니다.");
+      //에러가 있을 때 나오는 말 등록
+      return list(req); //리스트로 다시돌려보냄.
     }
     return "redirect:/news.nhn?action=list";
   }
 
 
-  public String list(HttpServletRequest req, HttpServletResponse resp) {
+  public String list(HttpServletRequest req) {
     List<News> list;
     try {
       list = newsDAO.getAll();
@@ -101,21 +106,25 @@ public class NewsController extends HttpServlet {
     return "newsList.jsp";
   }
 
-    public String deleteNews(HttpServletRequest req, HttpServletResponse resp){
+    public String deleteNews(HttpServletRequest req){
       try {
         newsDAO.delNews(Integer.parseInt(req.getParameter("aid")));
       } catch (SQLException e) {
-        throw new RuntimeException(e);
+        e.printStackTrace();
+        ctx.log("뉴스를 삭제하는 과정에서 문제 발생");
+        req.setAttribute("error","뉴스를 정상적으로 삭제하지 못함");
       }
       return "redirect:/news.nhn?action=list";
     }
 
-  public String getNews(HttpServletRequest req, HttpServletResponse resp) {
+  public String getNews(HttpServletRequest req) {
     try {
       News news = newsDAO.getNews(Integer.parseInt(req.getParameter("aid")));
       req.setAttribute("news",news);
     } catch (SQLException e) {
-      throw new RuntimeException(e);
+      e.printStackTrace();
+      ctx.log("뉴스를 가져오는 과정에서 문제발생");
+      req.setAttribute("error","뉴스를 정상적으로 가져오지 못함");
     }
     return "newsView.jsp";
   }
