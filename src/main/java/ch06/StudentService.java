@@ -60,6 +60,8 @@ public class StudentService {
         s.setBirth(rs.getString("birth"));
         s.setEmail(rs.getString("email"));
         students.add(s);
+        //rs를 이용해 Student 객체에 데이터를 매핑하고, List에 추가한 다음, rs에 담긴 모든 데이터를 실행하고 나서,
+        //List 타입을 리턴함
       }
     } catch (SQLException e) {
       throw new RuntimeException(e);
@@ -93,6 +95,7 @@ public class StudentService {
 
 
   public void insert(Student student) {
+    //student객체를 인자로 받아와서, SQL문과 매핑하기
 
     try {
       pstmt = conn.prepareStatement("insert into student(id,name,univ,birth,email) values(?,?,?,?,?);");
@@ -103,7 +106,7 @@ public class StudentService {
       pstmt.setString(5,student.getEmail());
       int res = pstmt.executeUpdate();
       if(res ==1){
-        System.out.println("등록완료");
+        System.out.println("새로운 등록 완료");
       }
 
     } catch (SQLException e) {
@@ -125,7 +128,7 @@ public class StudentService {
 
       int res = pstmt.executeUpdate();
       if(res ==1){
-        System.out.println("등록완료");
+        System.out.println("업데이트 완료");
       }
 
     } catch (SQLException e) {
@@ -140,7 +143,7 @@ public class StudentService {
       pstmt.setString(1,id);
       int res = pstmt.executeUpdate();
       if(res ==1){
-        System.out.println("등록완료");
+        System.out.println("삭제 완료");
       }
 
 

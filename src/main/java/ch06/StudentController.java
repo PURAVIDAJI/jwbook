@@ -57,7 +57,10 @@ public class StudentController extends HttpServlet {
             resp.sendRedirect(view);
           }
           break;
-        case "delete" : view = delete(req,resp);break;
+        case "delete" :
+          view = delete(req,resp);
+          resp.sendRedirect(view);
+          break;
         case "insert" :
           view = insert(req,resp);
           resp.sendRedirect(view);
@@ -69,7 +72,7 @@ public class StudentController extends HttpServlet {
   private String list(HttpServletRequest req, HttpServletResponse resp) {
 
     List<Student> students = service.findAll();
-    req.setAttribute("students", service.findAll());
+    req.setAttribute("students", students);
     //리스트로 반환된것 넘기겠다.
 
     return "studentList.jsp"; //데이터를 넣어서 어느화면으로 넘겨주면 될지 알려주는 함수
@@ -81,12 +84,12 @@ public class StudentController extends HttpServlet {
     resp.setContentType("text/html; charset=UTF-8");
     String method =req.getMethod();
     if(method.equals("GET")){
-      req.setAttribute("s",service.find(Integer.parseInt(req.getParameter("id"))));
+      req.setAttribute("stu",service.find(Integer.parseInt(req.getParameter("id"))));
       return "studentForm.jsp";
     } else if (method.equals("POST")) {
       req.setCharacterEncoding("utf-8");
       service.update(Integer.parseInt(req.getParameter("id")),req.getParameter("univ"),req.getParameter("birth"),req.getParameter("email"));
-      req.setAttribute("s",service.find(Integer.parseInt(req.getParameter("id"))));
+      req.setAttribute("stu",service.find(Integer.parseInt(req.getParameter("id"))));
       return "/student?action=list";
 
     }else {
@@ -106,6 +109,7 @@ public class StudentController extends HttpServlet {
       service.insert(s);
       return "/student?action=list";
     } else {
+
       return null;
 
     }

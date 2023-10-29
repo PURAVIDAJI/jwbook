@@ -28,10 +28,11 @@ public class ProductController extends HttpServlet {
     if (action == null) {
       getServletContext().getRequestDispatcher("/pcontrol?action=list")
           .forward(req, resp);
+      //다시 실행됨? /pcontrol에서부터?
+
     } else {
       if (action.equals("list")) {
         view = list(req, resp);
-
 
       } else if (action.equals("info")) {
         view = info(req, resp);
@@ -49,7 +50,7 @@ public class ProductController extends HttpServlet {
   }
   private String list(HttpServletRequest req, HttpServletResponse resp){
     req.setAttribute("products",service.findAll());
-    //리스트로 반환된것 넘기겠다.
+    //productList.jsp로 productService의 findAll 메서드 적용한 것 반환된것 넘기겠다.
     
     return "productList.jsp"; //데이터를 넣어서 어느화면으로 넘겨주면 될지 알려주는 함수
     
